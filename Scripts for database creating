@@ -2,6 +2,13 @@ CREATE DATABASE tactic
   WITH ENCODING='UTF8'
        CONNECTION LIMIT=-1;
 
+CREATE SEQUENCE public.id_increment
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 999999
+  START 1
+  CACHE 1;
+
 CREATE TABLE public."homePageGoodsList"
 (
    id integer PRIMARY KEY DEFAULT nextval('id_increment'),
@@ -9,9 +16,13 @@ CREATE TABLE public."homePageGoodsList"
    image text NOT NULL
 )
 
-CREATE SEQUENCE public.id_increment
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 999999
-  START 1
-  CACHE 1;
+INSERT INTO public."homePageGoodsList"(
+            goods, image)
+    VALUES ('badges', 'badges.jpg'),
+    ('closeout', 'closeout.jpg'),
+    ('eyewear', 'eyewear.jpg'),
+    ('packs', 'packs.jpg'),
+    ('tops', 'tops.jpg'),
+    ('uniforms', 'uniforms.jpg'),
+    ('wearpoonAccessories', 'wearpoonAccessories.jpg'),
+    ('boots', 'boots.jpg');
