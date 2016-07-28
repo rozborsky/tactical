@@ -10,7 +10,8 @@
 	</head>
 
 	<body>
-        <h1 class="startH1">first page</h1>
+        <jsp:include page="header.jsp" />
 
+        <jsp:include page="footer.jsp" />
 	</body>
 </html>
