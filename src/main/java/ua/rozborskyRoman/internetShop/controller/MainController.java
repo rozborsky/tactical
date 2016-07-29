@@ -1,11 +1,10 @@
 package ua.rozborskyRoman.internetShop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
 /**
  * Created by roman on 28.07.2016.
@@ -14,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MainController {
 
     @Autowired
-    @Qualifier("connectToMySQLq")
-    private DriverManagerDataSource driverManagerDataSource;
+    private DAO dbManager;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String registration() {
+
         return "main";
     }
 

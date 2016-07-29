@@ -16,7 +16,9 @@ CREATE TABLE public."homePageGoodsList"
    image text NOT NULL
 )
 
-INSERT INTO public."homePageGoodsList"(
+SQLite
+
+INSERT INTO homePageGoodsList(
             goods, image)
     VALUES ('badges', 'badges.jpg'),
     ('closeout', 'closeout.jpg'),
