@@ -2,19 +2,23 @@ CREATE DATABASE tactic
   WITH ENCODING='UTF8'
        CONNECTION LIMIT=-1;
 
-CREATE SEQUENCE public.id_increment
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 999999
-  START 1
-  CACHE 1;
 
-CREATE TABLE public."homePageGoodsList"
-(
-   id integer PRIMARY KEY DEFAULT nextval('id_increment'),
-   goods text NOT NULL,
-   image text NOT NULL
-)
+CREATE TABLE [homePageGoodsList](
+    [id] INTEGER(2),
+    [goods] TEXT(50) NOT NULL,
+    [image] TEXT(50) NOT NULL,
+    PRIMARY KEY([id]));
+
+
+CREATE TABLE [buyer](
+    [id] INTEGER(3),
+    [name] TEXT(20) NOT NULL,
+    [surname] TEXT(20) NOT NULL,
+    [eMail] TEXT(50) NOT NULL,
+    [adress] TEXT(50) NOT NULL,
+    [phone] TEXT(15) NOT NULL,
+    [password] TEXT(50),
+    PRIMARY KEY([id]));
 
 SQLite
 
@@ -28,3 +32,23 @@ INSERT INTO homePageGoodsList(
     ('uniforms', 'uniforms.jpg'),
     ('wearpoonAccessories', 'wearpoonAccessories.jpg'),
     ('boots', 'boots.jpg');
+
+
+
+
+
+If MySQL using
+
+CREATE SEQUENCE public.id_increment
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 999999
+  START 1
+  CACHE 1;
+
+CREATE TABLE public."homePageGoodsList"
+(
+   id integer PRIMARY KEY DEFAULT nextval('id_increment'),
+   goods text NOT NULL,
+   image text NOT NULL
+)
