@@ -2,11 +2,15 @@ package ua.rozborskyRoman.internetShop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rozborskyRoman.internetShop.classes.Buyer;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
+
+import javax.validation.Valid;
 
 /**
  * Created by roman on 28.07.2016.
@@ -58,7 +62,10 @@ public class MainController {
         return new ModelAndView("createAccount", "buyer", new Buyer());
     }
     @RequestMapping(value = "/confirmRegistration", method = RequestMethod.POST)
-    public String confirmRegistration(Buyer buyer) {
+    public String confirmRegistration(@Valid @ModelAttribute Buyer buyer, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "createAccount";
+        }
         dbManager.addBuyer(buyer);
         return "confirmRegistration";
     }
