@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import ua.rozborskyRoman.internetShop.classes.Buyer;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
 /**
@@ -52,7 +54,12 @@ public class MainController {
     public String signIn() { return "signIn"; }
 
     @RequestMapping(value = "/createAccount", method = RequestMethod.GET)
-    public String createAccount() {
-        return "createAccount";
+    public ModelAndView createAccount() {
+        return new ModelAndView("createAccount", "buyer", new Buyer());
+    }
+    @RequestMapping(value = "/confirmRegistration", method = RequestMethod.POST)
+    public String confirmRegistration(Buyer buyer) {
+        dbManager.addBuyer(buyer);
+        return "confirmRegistration";
     }
 }

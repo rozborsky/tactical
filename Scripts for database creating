@@ -15,7 +15,7 @@ CREATE TABLE [buyer](
     [name] TEXT(20) NOT NULL,
     [surname] TEXT(20) NOT NULL,
     [eMail] TEXT(50) NOT NULL,
-    [adress] TEXT(50) NOT NULL,
+    [address] TEXT(50) NOT NULL,
     [phone] TEXT(15) NOT NULL,
     [password] TEXT(50),
     PRIMARY KEY([id]));
