@@ -21,6 +21,11 @@
                     <td><form:errors path="surname"/></td>
                 </tr>
                 <tr>
+                    <td>login:</td>
+                    <td><form:input path="login" placeholder="from 2 to 20 symbols"/></td>
+                    <td><form:errors path="login"/></td>
+                </tr>
+                <tr>
                     <td>eMail:</td>
                     <td><form:input path="eMail" /></td>
                     <td><form:errors path="eMail"/></td>
@@ -37,7 +42,7 @@
                 </tr>
                 <tr>
                     <td>password:</td>
-                    <td><form:input path="password" /></td>
+                    <td><form:input path="password" placeholder="from 6 to 20 symbols"/></td>
                     <td><form:errors path="password"/></td>
                 </tr>
                 <tr>
@@ -52,6 +57,6 @@
             </table>
         </form:form>
 
-        <p id="todo">confirm password</p>
+        <p id="todo">errors brake form</p>
     </div>
 <jsp:include page="footer.jsp" />

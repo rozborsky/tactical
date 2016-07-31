@@ -8,4 +8,6 @@ import ua.rozborskyRoman.internetShop.classes.Buyer;
 public interface DAO {
 
     void addBuyer(Buyer buyer);
+
+    boolean isExistLogin(String login);
 }

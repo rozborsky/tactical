@@ -2,9 +2,7 @@ package ua.rozborskyRoman.internetShop.classes;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -12,6 +10,8 @@ import javax.validation.constraints.Size;
  * Created by roman on 30.07.2016.
  */
 public class Buyer {
+
+
     @NotEmpty(message = "enter name")
     @Size(min=2, max = 20, message = "name must be from 2 to 20 symbols")
     @Pattern(regexp = "^[a-zA-Z]*$", message = "Only characters are allowed")
@@ -21,6 +21,10 @@ public class Buyer {
     @Size(min=2, max = 20, message = "surname must be from 2 to 20 symbols")
     @Pattern(regexp = "^[a-zA-Z]*$", message = "Only characters are allowed")
     private String surname;
+
+    @NotEmpty(message = "enter login")
+    @Size(min=2, max = 20, message = "login must be from 6 to 20 symbols")
+    private String login;
 
     @NotEmpty(message = "enter e-mail")
     @Email(message = "e-mail is not correct")
@@ -36,7 +40,7 @@ public class Buyer {
     private String phone;
 
     @NotEmpty(message = "enter password")
-    @Size(min=6, max = 15, message = "password must be from 6 to 15 symbols")
+    @Size(min=6, max = 20, message = "password must be from 6 to 20 symbols")
     private String password;
 
     @NotEmpty(message = "passwords are not aquals")
@@ -96,5 +100,13 @@ public class Buyer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }
