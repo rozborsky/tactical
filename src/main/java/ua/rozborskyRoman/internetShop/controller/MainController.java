@@ -76,8 +76,7 @@ public class MainController {
         return "confirmRegistration";
     }
 
-    private void checkErrorsInForm(@Valid @ModelAttribute Buyer buyer, BindingResult bindingResult) {
-        System.out.println("checkErrorsInForm--------------------");
+    private void checkErrorsInForm(Buyer buyer, BindingResult bindingResult) {
         if (checkForm.checkLogin(buyer.getLogin())){
             bindingResult.rejectValue("login", "error.buyer", "user with this login is already exist");
         }

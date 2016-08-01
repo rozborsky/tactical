@@ -43,7 +43,7 @@ public class Buyer {
     @Size(min=6, max = 20, message = "password must be from 6 to 20 symbols")
     private String password;
 
-    @NotEmpty(message = "passwords are not aquals")
+    @NotEmpty(message = "confirm password")
     public String getConfirmPassword() {
         return confirmPassword;
     }
