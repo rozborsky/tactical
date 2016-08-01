@@ -18,6 +18,7 @@ CREATE TABLE [buyer](
     [address] TEXT(50) NOT NULL,
     [phone] TEXT(15) NOT NULL,
     [password] TEXT(50),
+    [login] TEXT(20),
     PRIMARY KEY([id]));
 
 SQLite
