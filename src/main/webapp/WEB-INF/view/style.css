@@ -66,6 +66,6 @@ h1{
      margin: auto;
 }
 
-#todo{
+#todo, #error{
     color: red;
 }

@@ -10,4 +10,6 @@ public interface DAO {
     void addBuyer(Buyer buyer);
 
     boolean isExistLogin(String login);
+
+    boolean checkPassword(String login, String Password);
 }

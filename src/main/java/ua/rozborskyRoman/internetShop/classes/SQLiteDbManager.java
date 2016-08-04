@@ -42,4 +42,13 @@ public class SQLiteDbManager implements DAO {
         return true;
     }
 
+    @Override
+    public boolean checkPassword(String login, String password) {
+        String passwordInDb = jdbcTemplate.queryForObject("SELECT password FROM buyer WHERE login = ?",
+                new Object[]{login}, String.class);
+        if(passwordInDb.equals(password)){
+            return true;
+        }
+        return false;
+    }
 }

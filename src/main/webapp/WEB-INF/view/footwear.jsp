@@ -1,6 +1,7 @@
 <jsp:include page="header.jsp" />
 <h1>footwear</h1>
 <h3>BOOTS</h3>
+<h3>${previousPage}</h3>
 <p>
     You`ve known what an important piece of the uniform tactical boots are from the day you enlisted. In training you went on grueling marches, stood in formation during heat and rain, and tackled tough obstacle courses. Every day during that life-changing experience you relied on your boots to provide you with support and keep your feet protected so you could successfully finish boot camp a tougher, stronger, better service member. You found out just how important the right pair of combat boots can be.
     Now that you are looking for tactical boots for your career, you know that you need to choose a pair that keeps you on the path to being a better service member. You don’t want your boots to be a reason that you aren’t in the best shape. Whether this is one of your first pairs of military boots or this is one of a long history of pairs that have served you well while you were serving your country, we want to make your purchase as easy as possible.

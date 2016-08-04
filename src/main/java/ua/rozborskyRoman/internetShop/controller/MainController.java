@@ -2,15 +2,18 @@ package ua.rozborskyRoman.internetShop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rozborskyRoman.internetShop.classes.Buyer;
+import ua.rozborskyRoman.internetShop.classes.LoggedBuyer;
 import ua.rozborskyRoman.internetShop.interfaces.CheckForm;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -27,13 +30,28 @@ public class MainController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String registration() {
-
         return "main";
     }
 
     @RequestMapping(value = "/footwear", method = RequestMethod.GET)
     public String footwear() {
         return "footwear";
+    }
+
+    @RequestMapping(value = "/personalCabinet", method = RequestMethod.GET)
+    public String personalCabinet() {
+        return "personalCabinet";
+    }
+
+    @RequestMapping(value = "/checkBuyer", method = RequestMethod.POST)
+    public String checkBuyer(@Valid @ModelAttribute LoggedBuyer loggedBuyer, BindingResult bindingResult) {
+        if(dbManager.isExistLogin(loggedBuyer.getLogin())) {
+            if(dbManager.checkPassword(loggedBuyer.getLogin(),loggedBuyer.getPassword())) {
+                return "personalCabinet";
+            }
+        }
+        bindingResult.rejectValue("login", "error.loggedBuyer", "user with this login does not exist");
+        return "signIn";
     }
 
     @RequestMapping(value = "/clothing", method = RequestMethod.GET)
@@ -59,7 +77,12 @@ public class MainController {
     public String myAccount() { return "myAccount"; }
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
-    public String signIn() { return "signIn"; }
+    public ModelAndView signIn() {
+        return new ModelAndView("signIn", "loggedBuyer", new LoggedBuyer()); }
+
+    @RequestMapping(value = "/confirmSignIn", method = RequestMethod.GET)
+    public String confirmSignIn() {
+        return "confirmSignIn"; }
 
     @RequestMapping(value = "/createAccount", method = RequestMethod.GET)
     public ModelAndView createAccount() {
@@ -73,8 +96,9 @@ public class MainController {
             return "createAccount";
         }
         dbManager.addBuyer(buyer);
-        return "confirmRegistration";
+        return "personalCabinet";
     }
+
 
     private void checkErrorsInForm(Buyer buyer, BindingResult bindingResult) {
         if (checkForm.checkLogin(buyer.getLogin())){
