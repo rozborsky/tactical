@@ -1,15 +1,11 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="header.jsp" />
 <div id="contentDiv">
 
 <h1>mainPage</h1>
-<a href="/InternetShop"><img src="resources/homePage/category-homepage-badges.jpg"/></a>
-<a href="/InternetShop"><img src="resources/homePage/category-homepage-closeout.jpg"/></a>
-<a href="/InternetShop"><img src="resources/homePage/category-homepage-eyewear.jpg"/></a>
-<a href="/InternetShop"><img src="resources/homePage/category-homepage-packs.jpg"/></a>
-<a href="/InternetShop"><img src="resources/homePage/category-homepage-tops.jpg"/></a>
-<a href="/InternetShop"><img src="resources/homePage/category-homepage-uniforms.jpg"/></a>
-<a href="/InternetShop"><img src="resources/homePage/category-homepage-weapon-accessories.jpg"/></a>
-<a href="/InternetShop"><img src="resources/homePage/free-exchange-category-homepage-boots.jpg"/></a>
+<c:forEach var="listValue" items="${goodsCategories}">
+	<a href="/InternetShop/${listValue.getName()}"><img src="resources/homePage/${listValue.getImage()}"/></a>
+</c:forEach>
 
 </div>
 <jsp:include page="footer.jsp" />

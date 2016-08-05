@@ -4,10 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,5 +55,23 @@ public class SQLiteDbManager implements DAO {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<GoodsCategory> takeListGoods(String tableName) {
+        final String sql = "SELECT * FROM " + tableName;
+
+        List<GoodsCategory> listCategoryOfGoods = jdbcTemplate.query(sql, new RowMapper<GoodsCategory>() {
+
+            @Override
+            public GoodsCategory mapRow(ResultSet rs, int rowNum) throws SQLException {
+                GoodsCategory goodsCategory = new GoodsCategory();
+                goodsCategory.setName(rs.getString("name"));
+                goodsCategory.setImage(rs.getString("image"));
+                return goodsCategory;
+            }
+
+        });
+        return listCategoryOfGoods;
     }
 }

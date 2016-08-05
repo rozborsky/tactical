@@ -2,19 +2,19 @@ package ua.rozborskyRoman.internetShop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rozborskyRoman.internetShop.classes.Buyer;
+import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
 import ua.rozborskyRoman.internetShop.classes.LoggedBuyer;
 import ua.rozborskyRoman.internetShop.interfaces.CheckForm;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by roman on 28.07.2016.
@@ -29,8 +29,10 @@ public class MainController {
     private CheckForm checkForm;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String registration() {
-        return "main";
+    public ModelAndView registration() {
+        List<GoodsCategory> goodsCategories = dbManager.takeListGoods("homePageGoodsList");
+        ModelAndView modelAndView = new ModelAndView("main", "goodsCategories", goodsCategories);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/footwear", method = RequestMethod.GET)
