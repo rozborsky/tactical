@@ -22,6 +22,10 @@ public class Order {
         orderedGoods.add(goods);
     }
 
+    public void removeGoods() {
+
+    }
+
     public float totalPrise() {
         float prise = 0;
 

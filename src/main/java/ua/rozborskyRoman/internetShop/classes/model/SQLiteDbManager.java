@@ -1,4 +1,4 @@
-package ua.rozborskyRoman.internetShop.classes;
+package ua.rozborskyRoman.internetShop.classes.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -6,6 +6,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import ua.rozborskyRoman.internetShop.classes.Buyer;
+import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
 import javax.sql.DataSource;
@@ -72,6 +74,9 @@ public class SQLiteDbManager implements DAO {
             }
 
         });
+        for (int i = 0; i < listCategoryOfGoods.size(); i++) {
+            listCategoryOfGoods.get(i).getImage();
+        }
         return listCategoryOfGoods;
     }
 }

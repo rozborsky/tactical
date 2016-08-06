@@ -2,6 +2,7 @@ package ua.rozborskyRoman.internetShop.classes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ua.rozborskyRoman.internetShop.classes.model.SQLiteDbManager;
 import ua.rozborskyRoman.internetShop.interfaces.CheckForm;
 
 /**

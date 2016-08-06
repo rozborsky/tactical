@@ -5,7 +5,13 @@ CREATE DATABASE tactic
 
 CREATE TABLE [homePageGoodsList](
     [id] INTEGER(2),
-    [goods] TEXT(50) NOT NULL,
+    [name] TEXT(50) NOT NULL,
+    [image] TEXT(50) NOT NULL,
+    PRIMARY KEY([id]));
+
+CREATE TABLE [footwearPageGoodsList](
+    [id] INTEGER(2),
+    [name] TEXT(50) NOT NULL,
     [image] TEXT(50) NOT NULL,
     PRIMARY KEY([id]));
 
@@ -24,7 +30,7 @@ CREATE TABLE [buyer](
 SQLite
 
 INSERT INTO homePageGoodsList(
-            goods, image)
+            name, image)
     VALUES ('badges', 'badges.jpg'),
     ('closeout', 'closeout.jpg'),
     ('eyewear', 'eyewear.jpg'),
@@ -33,6 +39,18 @@ INSERT INTO homePageGoodsList(
     ('uniforms', 'uniforms.jpg'),
     ('wearpoonAccessories', 'wearpoonAccessories.jpg'),
     ('boots', 'boots.jpg');
+
+
+INSERT INTO footwearPageGoodsList(
+            name, image)
+    VALUES ('Nike', 'Nike.jpg'),
+    ('socks', 'socks.jpg'),
+    ('army', 'army.jpg'),
+    ('police', 'police.jpg'),
+    ('insulated', 'insulated.jpg'),
+    ('oxford', 'oxford.jpg'),
+    ('sideZip', 'sideZip.jpg'),
+    ('jump', 'jump.jpg');
 
 
 

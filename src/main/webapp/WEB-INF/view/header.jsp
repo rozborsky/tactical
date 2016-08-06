@@ -19,8 +19,11 @@
                     <ul id="signLinks">
                          <li><a href="/InternetShop">Home</a></li>
                          <li><a href="getSertificates">Get Certificates</a></li>
-                         <li><a href="signIn">SignIn</a></li>
-                         <li><a href="createAccount">Create account</a></li>
+                         <li>_____________________</li>
+                         ${sessionScope.registrationSignInOrName}
+                         <li><a href="cart">CART</a></li>
+                         <li> total - ${sessionScope.totalPrise}$</li>
+
                     </ul>
                 </div>
             </div>

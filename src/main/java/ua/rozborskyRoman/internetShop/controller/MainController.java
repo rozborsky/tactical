@@ -6,13 +6,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rozborskyRoman.internetShop.classes.Buyer;
 import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
 import ua.rozborskyRoman.internetShop.classes.LoggedBuyer;
+import ua.rozborskyRoman.internetShop.classes.cart.Order;
 import ua.rozborskyRoman.internetShop.interfaces.CheckForm;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -20,6 +24,7 @@ import java.util.List;
  * Created by roman on 28.07.2016.
  */
 @Controller
+@SessionAttributes("httpSession")
 public class MainController {
 
     @Autowired
@@ -28,16 +33,27 @@ public class MainController {
     @Autowired
     private CheckForm checkForm;
 
+    @Autowired
+    private Order order;
+
+    private HttpSession httpSession;
+
+    private String buyer = null;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView registration() {
-        List<GoodsCategory> goodsCategories = dbManager.takeListGoods("homePageGoodsList");
-        ModelAndView modelAndView = new ModelAndView("main", "goodsCategories", goodsCategories);
-        return modelAndView;
+    public ModelAndView registration(HttpServletRequest request) {
+        httpSession = request.getSession(true);
+        return getModelAndView("main", "homePageGoodsList");
     }
 
     @RequestMapping(value = "/footwear", method = RequestMethod.GET)
-    public String footwear() {
-        return "footwear";
+    public ModelAndView footwear() {
+        return getModelAndView("footwear", "footwearPageGoodsList");
+    }
+
+    @RequestMapping(value = "/footwear/jump", method = RequestMethod.GET) //temporary
+    public ModelAndView footwearJump() {
+        return getModelAndView("jump", "footwearPageGoodsList");
     }
 
     @RequestMapping(value = "/personalCabinet", method = RequestMethod.GET)
@@ -45,16 +61,21 @@ public class MainController {
         return "personalCabinet";
     }
 
-    @RequestMapping(value = "/checkBuyer", method = RequestMethod.POST)
-    public String checkBuyer(@Valid @ModelAttribute LoggedBuyer loggedBuyer, BindingResult bindingResult) {
-        if(dbManager.isExistLogin(loggedBuyer.getLogin())) {
-            if(dbManager.checkPassword(loggedBuyer.getLogin(),loggedBuyer.getPassword())) {
-                return "personalCabinet";
-            }
+    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
+    public String signIn(@Valid @ModelAttribute LoggedBuyer loggedBuyer, BindingResult bindingResult) {
+        if (isRegistered(loggedBuyer, bindingResult)){
+            return "personalCabinet";
         }
-        bindingResult.rejectValue("login", "error.loggedBuyer", "user with this login does not exist");
         return "signIn";
     }
+
+    @RequestMapping(value = "/signIn", method = RequestMethod.GET)
+    public ModelAndView signIn() {
+        return new ModelAndView("signIn", "loggedBuyer", new LoggedBuyer()); }
+
+    @RequestMapping(value = "/cart", method = RequestMethod.GET)
+    public ModelAndView cart() {
+        return new ModelAndView("cart", "loggedBuyer", new LoggedBuyer()); }
 
     @RequestMapping(value = "/clothing", method = RequestMethod.GET)
     public String clothing() {
@@ -77,14 +98,6 @@ public class MainController {
 
     @RequestMapping(value = "/myAccount", method = RequestMethod.GET)
     public String myAccount() { return "myAccount"; }
-
-    @RequestMapping(value = "/signIn", method = RequestMethod.GET)
-    public ModelAndView signIn() {
-        return new ModelAndView("signIn", "loggedBuyer", new LoggedBuyer()); }
-
-    @RequestMapping(value = "/confirmSignIn", method = RequestMethod.GET)
-    public String confirmSignIn() {
-        return "confirmSignIn"; }
 
     @RequestMapping(value = "/createAccount", method = RequestMethod.GET)
     public ModelAndView createAccount() {
@@ -109,5 +122,32 @@ public class MainController {
         if (!checkForm.checkEqualsPasswords(buyer.getPassword(), buyer.getConfirmPassword())){
             bindingResult.rejectValue("confirmPassword", "error.buyer", "passwords are not equals");
         }
+    }
+
+    private ModelAndView getModelAndView(String page, String table) {
+        List<GoodsCategory> goodsCategories = dbManager.takeListGoods(table);
+        ModelAndView modelAndView = new ModelAndView(page, "goodsCategories", goodsCategories);
+        String registrationSignInOrName;
+        if(buyer != null){
+            registrationSignInOrName = "<li><a href=\"personalCabinet\">" + buyer + "</a></li>";
+        }else{
+            registrationSignInOrName = "<li><a href=\"signIn\">SignIn</a></li>\n" +
+                    "<li><a href=\"createAccount\">Create account</a></li>";
+        }
+        httpSession.setAttribute("totalPrise", order.totalPrise());
+        httpSession.setAttribute("registrationSignInOrName", registrationSignInOrName);
+
+        return modelAndView;
+    }
+
+    private boolean isRegistered(LoggedBuyer loggedBuyer, BindingResult bindingResult) {
+        if(dbManager.isExistLogin(loggedBuyer.getLogin())) {
+            if(dbManager.checkPassword(loggedBuyer.getLogin(),loggedBuyer.getPassword())) {
+                buyer = "nameBuyer";
+                return true;
+            }
+        }
+        bindingResult.rejectValue("login", "error.loggedBuyer", "user with this login does not exist");
+        return false;
     }
 }
