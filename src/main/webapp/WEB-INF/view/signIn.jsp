@@ -7,7 +7,7 @@
 <h1>signIn</h1>
 <h3>${previousPage}</h3>
 <div>
-        <form:form action="signIn" method="post" modelAttribute="loggedBuyer">
+        <form:form action="signIn" method="post" modelAttribute="signIn">
             <table border="0">
                 <tr>
                     <td colspan="2" align="center"><h2>Sign in</h2></td>

@@ -7,7 +7,7 @@ import ua.rozborskyRoman.internetShop.interfaces.DAO;
 /**
  * Created by roman on 01.08.2016.
  */
-public class LoggedBuyer {
+public class SignIn {
 
     @NotEmpty(message = "insert login")
     private String login;
@@ -22,7 +22,6 @@ public class LoggedBuyer {
     public String getPassword() {
         return password;
     }
-
 
     public void setLogin(String login) {
         this.login = login;

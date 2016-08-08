@@ -22,7 +22,7 @@
                          <li>_____________________</li>
                          ${sessionScope.registrationSignInOrName}
                          <li><a href="cart">CART</a></li>
-                         <li> total - ${sessionScope.totalPrise}$</li>
+                         <li> total - ${sessionScope.order.totalPrise()}$</li>
 
                     </ul>
                 </div>
