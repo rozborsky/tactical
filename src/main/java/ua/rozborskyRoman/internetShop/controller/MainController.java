@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rozborskyRoman.internetShop.classes.Buyer;
 import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
-import ua.rozborskyRoman.internetShop.classes.SignIn;
+import ua.rozborskyRoman.internetShop.classes.ValuesSignIn;
 import ua.rozborskyRoman.internetShop.classes.cart.Order;
 import ua.rozborskyRoman.internetShop.classes.RegisteredBuyer;
 import ua.rozborskyRoman.internetShop.interfaces.CheckForm;
@@ -40,10 +40,24 @@ public class MainController {
 
     private HttpSession httpSession;
 
+    @ModelAttribute("registrationSignInOrName")
+    public String getPerson(){
+        try{
+            RegisteredBuyer registeredBuyer = (RegisteredBuyer)httpSession.getAttribute("registeredBuyer");
+            registeredBuyer.getId();
+        } catch (RuntimeException exception) {
+            return "<li><a href=\"signIn\">SignIn</a></li>\n" +
+                    "<li><a href=\"createAccount\">Create account</a></li>";
+        }
+        return "<li><a href=\"personalCabinet\">___" + registeredBuyer.getName() + "___</a></li>" +
+                "<li><a href=\"exit\">Exit</a></li>\"";
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView registration(HttpServletRequest request) {
 
         setSession(request);
+        httpSession.setAttribute("order", order);
 
         return getModelAndView("main", "homePageGoodsList");
     }
@@ -75,13 +89,15 @@ public class MainController {
     }
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public String signIn(@Valid @ModelAttribute SignIn signIn, BindingResult bindingResult) {
+    public String signIn(@Valid @ModelAttribute ValuesSignIn valuesSignIn, BindingResult bindingResult) {
 
-        if (isRegistered(signIn, bindingResult)){
-            String registrationSignInOrName = "<li><a href=\"personalCabinet\">___" + registeredBuyer.name + "___</a></li>" +
-                    "<li><a href=\"exit\">Exit</a></li>\"";
-            httpSession.setAttribute("registrationSignInOrName", registrationSignInOrName);
+        if (isRegistered(valuesSignIn, bindingResult)){
+            int buyerId = dbManager.getBuyerIg(valuesSignIn.getLogin());
+            registeredBuyer.setId(buyerId);
+            dbManager.getBuyerIg(valuesSignIn.getLogin());
+            registeredBuyer.setName(dbManager.getBuyerName(buyerId));
             httpSession.setAttribute("registeredBuyer", registeredBuyer);
+
             return "redirect:/personalCabinet";
         }
         return "signIn";
@@ -90,13 +106,13 @@ public class MainController {
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public ModelAndView signIn() {
 
-        return new ModelAndView("signIn", "signIn", new SignIn());
+        return new ModelAndView("signIn", "signIn", new ValuesSignIn());
     }
 
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
     public ModelAndView cart() {
 
-        return new ModelAndView("cart", "signIn", new SignIn());
+        return new ModelAndView("cart", "signIn", new ValuesSignIn());
     }
 
     @RequestMapping(value = "/clothing", method = RequestMethod.GET)
@@ -156,22 +172,17 @@ public class MainController {
 
     private void setSession(HttpServletRequest request) {
         httpSession = request.getSession(true);
-        httpSession.setAttribute("order", order);
-        String registrationSignInOrName = "<li><a href=\"signIn\">SignIn</a></li>\n" +
-                    "<li><a href=\"createAccount\">Create account</a></li>";
-
-        if (httpSession.getAttribute("registeredBuyer") == null) {
-            httpSession.setAttribute("registrationSignInOrName", registrationSignInOrName);
-        }
+        httpSession.setMaxInactiveInterval(30 * 60);
     }
 
-    private boolean isRegistered(SignIn signIn, BindingResult bindingResult) {
+    private boolean isRegistered(ValuesSignIn signIn, BindingResult bindingResult) {
         if(dbManager.isExistLogin(signIn.getLogin())) {
             if(dbManager.checkPassword(signIn.getLogin(),signIn.getPassword())) {
                 return true;
             }
         }
         bindingResult.rejectValue("login", "error.signIn", "user with this login does not exist");
+
         return false;
     }
 }

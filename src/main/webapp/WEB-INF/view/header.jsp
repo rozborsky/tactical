@@ -20,7 +20,7 @@
                          <li><a href="/InternetShop">Home</a></li>
                          <li><a href="getSertificates">Get Certificates</a></li>
                          <li>_____________________</li>
-                         ${sessionScope.registrationSignInOrName}
+                         ${registrationSignInOrName}
                          <li><a href="cart">CART</a></li>
                          <li> total - ${sessionScope.order.totalPrise()}$</li>
 

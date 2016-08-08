@@ -25,7 +25,7 @@ public class SQLiteDbManager implements DAO {
 
     private DataSource dataSource;
 
-   private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     @Qualifier("dataSourceSQLite")
@@ -44,8 +44,10 @@ public class SQLiteDbManager implements DAO {
         try {
             jdbcTemplate.queryForMap("SELECT * FROM buyer WHERE login = '" + login + "'");
         } catch (EmptyResultDataAccessException exception) {
+
             return false;
         }
+
         return true;
     }
 
@@ -54,8 +56,10 @@ public class SQLiteDbManager implements DAO {
         String passwordInDb = jdbcTemplate.queryForObject("SELECT password FROM buyer WHERE login = ?",
                 new Object[]{login}, String.class);
         if(passwordInDb.equals(password)){
+
             return true;
         }
+
         return false;
     }
 
@@ -77,6 +81,21 @@ public class SQLiteDbManager implements DAO {
         for (int i = 0; i < listCategoryOfGoods.size(); i++) {
             listCategoryOfGoods.get(i).getImage();
         }
+
         return listCategoryOfGoods;
     }
+
+    @Override
+    public int getBuyerIg(String login) {
+        return jdbcTemplate.queryForObject("SELECT rowid FROM buyer WHERE login = ?",
+                new Object[]{login}, Integer.class);
+    }
+
+    @Override
+    public String getBuyerName(int id) {
+        return jdbcTemplate.queryForObject("SELECT name FROM buyer WHERE rowid = ?",
+                new Object[]{id}, String.class);
+    }
+
+
 }

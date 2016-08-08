@@ -7,7 +7,7 @@ import ua.rozborskyRoman.internetShop.interfaces.DAO;
 /**
  * Created by roman on 01.08.2016.
  */
-public class SignIn {
+public class ValuesSignIn {
 
     @NotEmpty(message = "insert login")
     private String login;

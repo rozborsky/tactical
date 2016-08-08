@@ -18,4 +18,8 @@ public interface DAO {
     boolean checkPassword(String login, String Password);
 
     List<GoodsCategory> takeListGoods(String tableName);
+
+    int getBuyerIg(String login);
+
+    String getBuyerName(int id);
 }
