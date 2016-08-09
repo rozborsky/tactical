@@ -5,6 +5,8 @@ package ua.rozborskyRoman.internetShop.classes;
  */
 public class GoodsCategory {
 
+    private int id;
+
     private String name;
 
     private String image;
@@ -24,4 +26,13 @@ public class GoodsCategory {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }
