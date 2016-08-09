@@ -1,6 +1,7 @@
 package ua.rozborskyRoman.internetShop.interfaces;
 
 import ua.rozborskyRoman.internetShop.classes.Buyer;
+import ua.rozborskyRoman.internetShop.classes.Goods;
 import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
 
 import java.util.List;
@@ -17,9 +18,11 @@ public interface DAO {
 
     boolean checkPassword(String login, String Password);
 
-    List<GoodsCategory> takeListGoods(String tableName);
+    List<GoodsCategory> takeListSubdivision(String tableName);
 
     int getBuyerIg(String login);
 
     String getBuyerName(int id);
+
+    List<Goods> takeListGoods(String tableName);
 }

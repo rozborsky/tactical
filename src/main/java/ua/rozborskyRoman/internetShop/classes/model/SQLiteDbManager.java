@@ -7,15 +7,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import ua.rozborskyRoman.internetShop.classes.Buyer;
+import ua.rozborskyRoman.internetShop.classes.Goods;
 import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by roman on 29.07.2016.
@@ -35,7 +34,7 @@ public class SQLiteDbManager implements DAO {
 
     public void addBuyer(Buyer buyer) {
         String query = "INSERT INTO buyer (name, surname, eMail, login, address, phone, password) values (?,?,?,?,?,?,?)";
-        jdbcTemplate.update(query, new Object []{buyer.getName(), buyer.getSurname(), buyer.geteMail(), buyer.getLogin(),
+        jdbcTemplate.update(query, new Object[]{buyer.getName(), buyer.getSurname(), buyer.geteMail(), buyer.getLogin(),
                 buyer.getAddress(), buyer.getPhone(), buyer.getPassword()});
     }
 
@@ -55,7 +54,7 @@ public class SQLiteDbManager implements DAO {
     public boolean checkPassword(String login, String password) {
         String passwordInDb = jdbcTemplate.queryForObject("SELECT password FROM buyer WHERE login = ?",
                 new Object[]{login}, String.class);
-        if(passwordInDb.equals(password)){
+        if (passwordInDb.equals(password)) {
 
             return true;
         }
@@ -64,7 +63,7 @@ public class SQLiteDbManager implements DAO {
     }
 
     @Override
-    public List<GoodsCategory> takeListGoods(String tableName) {
+    public List<GoodsCategory> takeListSubdivision(String tableName) {
         final String sql = "SELECT * FROM " + tableName;
 
         List<GoodsCategory> listCategoryOfGoods = jdbcTemplate.query(sql, new RowMapper<GoodsCategory>() {
@@ -98,4 +97,20 @@ public class SQLiteDbManager implements DAO {
     }
 
 
+    @Override
+    public List<Goods> takeListGoods(String tableName) {
+        final String sql = "SELECT * FROM " + tableName;
+        List<Goods> listOfGoods = jdbcTemplate.query(sql, new RowMapper<Goods>() {
+
+            @Override
+            public Goods mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Goods goods = new Goods();
+                goods.setTitle(rs.getString("title"));
+                goods.setDescription(rs.getString("description"));
+                goods.setPrice(rs.getFloat("prise"));
+                return goods;
+            }
+        });
+        return listOfGoods;
+    }
 }
