@@ -141,7 +141,7 @@ public class SQLiteDbManager implements DAO {
                 Goods goods = new Goods();
                 goods.setTitle(rs.getString("title"));
                 goods.setDescription(rs.getString("description"));
-                goods.setPrice(rs.getFloat("prise"));
+                goods.setPrice(rs.getFloat("price"));
                 return goods;
             }
         });
@@ -150,15 +150,14 @@ public class SQLiteDbManager implements DAO {
 
     @Override
     public Goods takeGoods(String tableName, String goods) {
-        System.out.println("SELECT * FROM " + tableName + " WHERE title = " + goods);
         String sql = "SELECT * FROM " + tableName + " WHERE title = ?";
-        Goods result = (Goods)jdbcTemplate.queryForObject(sql, new Object[] {goods}, new RowMapper<Goods>() {
+        Goods result = jdbcTemplate.queryForObject(sql, new Object[] {goods}, new RowMapper<Goods>() {
             @Override
             public Goods mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Goods goods = new Goods();
                 goods.setTitle(rs.getString("title"));
                 goods.setDescription(rs.getString("description"));
-                goods.setPrice(rs.getFloat("prise"));
+                goods.setPrice(rs.getFloat("price"));
                 return goods;
             }
         });

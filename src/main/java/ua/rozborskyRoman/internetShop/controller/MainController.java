@@ -65,14 +65,14 @@ public class MainController {
 
 
     @RequestMapping(value = "/{category}", method = RequestMethod.GET)
-    public ModelAndView footwear(@PathVariable("category") String category) {
+    public ModelAndView showCategories(@PathVariable("category") String category) {
 
         return getModelAndViewCategory(category);
     }
 
 
     @RequestMapping(value = "/{category}/{goods}", method = RequestMethod.GET)
-    public ModelAndView footwearSubdivision(@PathVariable("category") String category,
+    public ModelAndView showGoods(@PathVariable("category") String category,
                                             @PathVariable("goods") String goods) {
 
         return getModelAndViewGoods(category, goods);
@@ -199,12 +199,11 @@ public class MainController {
     }
 
 
-    private ModelAndView getModelAndViewGoods(String category, String goodsw) {//todo name
+    private ModelAndView getModelAndViewGoods(String category, String goods) {
 
-        Goods goods = dbManager.takeGoods(category + "Goods", goodsw);
+        Goods resultGoods = dbManager.takeGoods(category + "Goods", goods);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("title", goods.getTitle());
-        modelAndView.addObject("description", goods.getDescription());
+        modelAndView.addObject("goods", resultGoods);
         modelAndView.setViewName("goods");
 
         return modelAndView;
