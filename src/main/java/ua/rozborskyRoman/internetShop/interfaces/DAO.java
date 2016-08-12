@@ -18,6 +18,8 @@ public interface DAO {
 
     boolean checkPassword(String login, String Password);
 
+    String takeDescription(String table, String division);
+
     List<GoodsCategory> takeListSubdivision(String tableName);
 
     int getBuyerIg(String login);
@@ -25,4 +27,8 @@ public interface DAO {
     String getBuyerName(int id);
 
     List<Goods> takeListGoods(String tableName);
+
+    List<GoodsCategory> takeListCategory(String tableName);
+
+    Goods takeGoods(String tableName, String goods);
 }

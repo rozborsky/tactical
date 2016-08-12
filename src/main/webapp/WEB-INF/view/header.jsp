@@ -18,7 +18,7 @@
                 <div id="contentDiv">
                     <ul id="signLinks">
                          <li><a href="/InternetShop">Home</a></li>
-                         <li><a href="getSertificates">Get Certificates</a></li>
+                         <li><a href="/InternetShop/getSertificates">Get Certificates</a></li>
                          <li>_____________________</li>
                          ${registrationSignInOrName}
                          <li><a href="cart">CART</a></li>
@@ -31,11 +31,11 @@
             <div id="headerNavigation">
                 <div id="contentDiv">
                     <ul id="signLinks">
-                         <li><a href="footwear">FOOTWEAR</a></li>
-                         <li><a href="clothing">CLOTHING</a></li>
-                         <li><a href="gear">GEAR</a></li>
-                         <li><a href="deals">DEALS</a></li>
-                         <li><a href="brands">BRANDS</a></li>
+                         <li><a href="/InternetShop/footwear">FOOTWEAR</a></li>
+                         <li><a href="/InternetShop/clothing">CLOTHING</a></li>
+                         <li><a href="/InternetShop/gear">GEAR</a></li>
+                         <li><a href="/InternetShop/deals">DEALS</a></li>
+                         <li><a href="/InternetShop/brands">BRANDS</a></li>
                     </ul>
                 </div>
             </div>

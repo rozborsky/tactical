@@ -3,16 +3,36 @@ CREATE DATABASE tactic
        CONNECTION LIMIT=-1;
 
 
-CREATE TABLE [homePageGoodsList](
+CREATE TABLE [homeGoodsList](
     [id] INTEGER(2),
     [name] TEXT(50) NOT NULL,
     [image] TEXT(50) NOT NULL,
     PRIMARY KEY([id]));
 
-CREATE TABLE [footwearPageGoodsList](
+CREATE TABLE [footwearGoodsList](
     [id] INTEGER(2),
     [name] TEXT(50) NOT NULL,
     [image] TEXT(50) NOT NULL,
+    PRIMARY KEY([id]));
+
+CREATE TABLE "eyewearGoodsList"(
+    [id] INTEGER(2),
+    [name] TEXT(50) NOT NULL,
+    [image] TEXT(50) NOT NULL,
+    PRIMARY KEY([id]));
+
+CREATE TABLE "jumpFootwear"(
+    [id] INTEGER(3),
+    [title] TEXT(100) NOT NULL,
+    [description] TEXT(500) NOT NULL,
+    [prise] FLOAT(7) NOT NULL,
+    PRIMARY KEY([id]));
+
+CREATE TABLE "sideZipFootwear"(
+    [id] INTEGER(3),
+    [title] TEXT(100) NOT NULL,
+    [description] TEXT(500) NOT NULL,
+    [prise] FLOAT(7) NOT NULL,
     PRIMARY KEY([id]));
 
 

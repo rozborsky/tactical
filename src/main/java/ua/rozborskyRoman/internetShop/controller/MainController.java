@@ -4,14 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import ua.rozborskyRoman.internetShop.classes.Buyer;
-import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
-import ua.rozborskyRoman.internetShop.classes.ValuesSignIn;
+import ua.rozborskyRoman.internetShop.classes.*;
 import ua.rozborskyRoman.internetShop.classes.cart.Order;
-import ua.rozborskyRoman.internetShop.classes.RegisteredBuyer;
 import ua.rozborskyRoman.internetShop.interfaces.CheckForm;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
@@ -41,38 +39,45 @@ public class MainController {
     private HttpSession httpSession;
 
     @ModelAttribute("registrationSignInOrName")
-    public String getPerson(){
+    public String getPerson(HttpServletRequest request){
+        setSession(request);
+        httpSession.setAttribute("order", order);
+
         try{
             RegisteredBuyer registeredBuyer = (RegisteredBuyer)httpSession.getAttribute("registeredBuyer");
             registeredBuyer.getId();
         } catch (RuntimeException exception) {
-            return "<li><a href=\"signIn\">SignIn</a></li>\n" +
-                    "<li><a href=\"createAccount\">Create account</a></li>";
+            return "<li><a href=\"/InternetShop/signIn\">SignIn</a></li>\n" +
+                    "<li><a href=\"/InternetShop/createAccount\">Create account</a></li>";
         }
-        return "<li><a href=\"personalCabinet\">___" + registeredBuyer.getName() + "___</a></li>" +
-                "<li><a href=\"exit\">Exit</a></li>\"";
+        return "<li><a href=\"/InternetShop/personalCabinet\">___" + registeredBuyer.getName() + "___</a></li>" +
+                "<li><a href=\"/InternetShop/exit\">Exit</a></li>\"";
     }
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView registration(HttpServletRequest request) {
+    public ModelAndView main() {
 
-        setSession(request);
-        httpSession.setAttribute("order", order);
+        List<GoodsCategory> goodsCategories = dbManager.takeListCategory("homeGoodsCategory");
 
-        return getModelAndView("main", "homePageGoodsList");
+        return new ModelAndView("main", "goodsCategories", goodsCategories);
     }
 
-    @RequestMapping(value = "/footwear", method = RequestMethod.GET)
-    public ModelAndView footwear() {
 
-        return getModelAndView("footwear", "footwearPageGoodsList");
+    @RequestMapping(value = "/{category}", method = RequestMethod.GET)
+    public ModelAndView footwear(@PathVariable("category") String category) {
+
+        return getModelAndViewCategory(category);
     }
 
-    @RequestMapping(value = "/footwear/jump", method = RequestMethod.GET) //temporary
-    public ModelAndView footwearJump() {
 
-        return getModelAndView("jump", "footwearPageGoodsList");
+    @RequestMapping(value = "/{category}/{goods}", method = RequestMethod.GET)
+    public ModelAndView footwearSubdivision(@PathVariable("category") String category,
+                                            @PathVariable("goods") String goods) {
+
+        return getModelAndViewGoods(category, goods);
     }
+
 
     @RequestMapping(value = "/personalCabinet", method = RequestMethod.GET)
     public String personalCabinet() {
@@ -92,16 +97,13 @@ public class MainController {
     public String signIn(@Valid @ModelAttribute ValuesSignIn valuesSignIn, BindingResult bindingResult) {
 
         if (isRegistered(valuesSignIn, bindingResult)){
-            int buyerId = dbManager.getBuyerIg(valuesSignIn.getLogin());
-            registeredBuyer.setId(buyerId);
-            dbManager.getBuyerIg(valuesSignIn.getLogin());
-            registeredBuyer.setName(dbManager.getBuyerName(buyerId));
-            httpSession.setAttribute("registeredBuyer", registeredBuyer);
+            setParametersBuyer(valuesSignIn);
 
             return "redirect:/personalCabinet";
         }
         return "signIn";
     }
+
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public ModelAndView signIn() {
@@ -164,16 +166,12 @@ public class MainController {
         }
     }
 
-    private ModelAndView getModelAndView(String page, String table) {
-        List<GoodsCategory> goodsCategories = dbManager.takeListGoods(table);
-        ModelAndView modelAndView = new ModelAndView(page, "goodsCategories", goodsCategories);
-        return modelAndView;
-    }
 
     private void setSession(HttpServletRequest request) {
         httpSession = request.getSession(true);
         httpSession.setMaxInactiveInterval(30 * 60);
     }
+
 
     private boolean isRegistered(ValuesSignIn signIn, BindingResult bindingResult) {
         if(dbManager.isExistLogin(signIn.getLogin())) {
@@ -184,5 +182,40 @@ public class MainController {
         bindingResult.rejectValue("login", "error.signIn", "user with this login does not exist");
 
         return false;
+    }
+
+
+    private ModelAndView getModelAndViewCategory(String category) {
+        String tableName = category + "Goods";
+        List<Goods> goodsList = dbManager.takeListGoods(tableName);
+        String description = dbManager.takeDescription("homeGoodsCategory", category);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title", category);
+        modelAndView.addObject("content", goodsList);
+        modelAndView.addObject("description", description);
+        modelAndView.setViewName("categoryGoods");
+        return modelAndView;
+    }
+
+
+    private ModelAndView getModelAndViewGoods(String category, String goodsw) {//todo name
+
+        Goods goods = dbManager.takeGoods(category + "Goods", goodsw);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title", goods.getTitle());
+        modelAndView.addObject("description", goods.getDescription());
+        modelAndView.setViewName("goods");
+
+        return modelAndView;
+    }
+
+
+    private void setParametersBuyer(ValuesSignIn valuesSignIn) {
+        int buyerId = dbManager.getBuyerIg(valuesSignIn.getLogin());
+        registeredBuyer.setId(buyerId);
+        dbManager.getBuyerIg(valuesSignIn.getLogin());
+        registeredBuyer.setName(dbManager.getBuyerName(buyerId));
+        httpSession.setAttribute("registeredBuyer", registeredBuyer);
     }
 }

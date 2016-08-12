@@ -63,7 +63,7 @@ public class SQLiteDbManager implements DAO {
     }
 
     @Override
-    public List<GoodsCategory> takeListSubdivision(String tableName) {
+    public List<GoodsCategory> takeListCategory(String tableName) {
         final String sql = "SELECT * FROM " + tableName;
 
         List<GoodsCategory> listCategoryOfGoods = jdbcTemplate.query(sql, new RowMapper<GoodsCategory>() {
@@ -73,6 +73,40 @@ public class SQLiteDbManager implements DAO {
                 GoodsCategory goodsCategory = new GoodsCategory();
                 goodsCategory.setName(rs.getString("name"));
                 goodsCategory.setImage(rs.getString("image"));
+
+                return goodsCategory;
+            }
+
+        });
+        for (int i = 0; i < listCategoryOfGoods.size(); i++) {
+            listCategoryOfGoods.get(i).getImage();
+        }
+
+        return listCategoryOfGoods;
+    }
+
+    @Override
+    public String takeDescription(String table, String category) {
+        final String sql = "SELECT description FROM " + table + " WHERE name = ?";
+
+        String description = jdbcTemplate.queryForObject(sql, new Object[] {category}, String.class);
+
+        return description;
+    }
+
+    @Override
+    public List<GoodsCategory> takeListSubdivision(String tableName) {
+        final String sql = "SELECT * FROM " + tableName;
+
+
+        List<GoodsCategory> listCategoryOfGoods = jdbcTemplate.query(sql, new RowMapper<GoodsCategory>() {
+
+            @Override
+            public GoodsCategory mapRow(ResultSet rs, int rowNum) throws SQLException {
+                GoodsCategory goodsCategory = new GoodsCategory();
+                goodsCategory.setName(rs.getString("name"));
+                goodsCategory.setImage(rs.getString("image"));
+                goodsCategory.setDescription(rs.getString("description"));
                 return goodsCategory;
             }
 
@@ -112,5 +146,23 @@ public class SQLiteDbManager implements DAO {
             }
         });
         return listOfGoods;
+    }
+
+    @Override
+    public Goods takeGoods(String tableName, String goods) {
+        System.out.println("SELECT * FROM " + tableName + " WHERE title = " + goods);
+        String sql = "SELECT * FROM " + tableName + " WHERE title = ?";
+        Goods result = (Goods)jdbcTemplate.queryForObject(sql, new Object[] {goods}, new RowMapper<Goods>() {
+            @Override
+            public Goods mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Goods goods = new Goods();
+                goods.setTitle(rs.getString("title"));
+                goods.setDescription(rs.getString("description"));
+                goods.setPrice(rs.getFloat("prise"));
+                return goods;
+            }
+        });
+
+        return result;
     }
 }
