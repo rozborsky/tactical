@@ -4,8 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <jsp:include page="header.jsp" />
-<h1>signIn</h1>
-<h3>${previousPage}</h3>
+
 <div>
         <form:form action="signIn" method="post" modelAttribute="signIn">
             <table border="0">

@@ -2,13 +2,12 @@ package ua.rozborskyRoman.internetShop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rozborskyRoman.internetShop.classes.*;
+import ua.rozborskyRoman.internetShop.classes.cart.GoodsInCart;
 import ua.rozborskyRoman.internetShop.classes.cart.Order;
 import ua.rozborskyRoman.internetShop.interfaces.CheckForm;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
@@ -35,6 +34,9 @@ public class MainController {
 
     @Autowired
     private RegisteredBuyer registeredBuyer;
+
+    @Autowired
+    private GoodsInCart goodsInCart;
 
     private HttpSession httpSession;
 
@@ -79,19 +81,43 @@ public class MainController {
     }
 
 
-    @RequestMapping(value = "/personalCabinet", method = RequestMethod.GET)
-    public String personalCabinet() {
+    @RequestMapping(value = "/{category}/{goods}", method = RequestMethod.POST)
+    public ModelAndView addGoodsToCart(@ModelAttribute GoodsInCart goodsInCart,
+                                        @PathVariable("category") String category,
+                                        @PathVariable("goods") String goods) {
+
+        order.addGoods(goodsInCart);
+
+        return getModelAndViewGoods(category, goods);
+    }
+
+
+    @RequestMapping(value = "/createAccount", method = RequestMethod.GET)
+    public ModelAndView createAccount() {
+        return new ModelAndView("createAccount", "buyer", new Buyer());
+    }
+
+
+    @RequestMapping(value = "/confirmRegistration", method = RequestMethod.POST)
+    public String confirmRegistration(@Valid @ModelAttribute Buyer buyer, BindingResult bindingResult) {
+
+        checkErrorsInForm(buyer, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "createAccount";
+        }
+        dbManager.addBuyer(buyer);
 
         return "personalCabinet";
     }
 
-    @RequestMapping(value = "/exit", method = RequestMethod.GET)
-    public String exit() {
 
-        httpSession.invalidate();
+    @RequestMapping(value = "/signIn", method = RequestMethod.GET)
+    public ModelAndView signIn() {
 
-        return "redirect:/";
+        return new ModelAndView("signIn", "signIn", new ValuesSignIn());
     }
+
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     public String signIn(@Valid @ModelAttribute ValuesSignIn valuesSignIn, BindingResult bindingResult) {
@@ -105,17 +131,28 @@ public class MainController {
     }
 
 
-    @RequestMapping(value = "/signIn", method = RequestMethod.GET)
-    public ModelAndView signIn() {
+    @RequestMapping(value = "/exit", method = RequestMethod.GET)
+    public String exit() {
 
-        return new ModelAndView("signIn", "signIn", new ValuesSignIn());
+        httpSession.invalidate();
+
+        return "redirect:/";
     }
+
 
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
-    public ModelAndView cart() {
+    public String cart() {
 
-        return new ModelAndView("cart", "signIn", new ValuesSignIn());
+        return "cart";
     }
+
+
+    @RequestMapping(value = "/personalCabinet", method = RequestMethod.GET)
+    public String personalCabinet() {
+
+        return "personalCabinet";
+    }
+
 
     @RequestMapping(value = "/clothing", method = RequestMethod.GET)
     public String clothing() {
@@ -139,22 +176,6 @@ public class MainController {
     @RequestMapping(value = "/myAccount", method = RequestMethod.GET)
     public String myAccount() { return "myAccount"; }
 
-    @RequestMapping(value = "/createAccount", method = RequestMethod.GET)
-    public ModelAndView createAccount() {
-        return new ModelAndView("createAccount", "buyer", new Buyer());
-    }
-
-    @RequestMapping(value = "/confirmRegistration", method = RequestMethod.POST)
-    public String confirmRegistration(@Valid @ModelAttribute Buyer buyer, BindingResult bindingResult) {
-        checkErrorsInForm(buyer, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            return "createAccount";
-        }
-        dbManager.addBuyer(buyer);
-
-        return "personalCabinet";
-    }
 
 
     private void checkErrorsInForm(Buyer buyer, BindingResult bindingResult) {
@@ -204,7 +225,8 @@ public class MainController {
         Goods resultGoods = dbManager.takeGoods(category + "Goods", goods);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("goods", resultGoods);
-        modelAndView.setViewName("goods");
+        modelAndView.addObject("goodsInCart", new GoodsInCart());
+        modelAndView.setViewName("goodsPage");
 
         return modelAndView;
     }

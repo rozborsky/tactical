@@ -1,22 +1,28 @@
 package ua.rozborskyRoman.internetShop.classes.cart;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.stereotype.Component;
+
+import javax.validation.constraints.Pattern;
+
 /**
  * Created by roman on 06.08.2016.
  */
+@Component
 public class GoodsInCart {
 
-    private String name;
+    private String title;
 
     private int number;
 
     private float prise;
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getNumber() {
