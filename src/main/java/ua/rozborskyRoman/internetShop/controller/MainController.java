@@ -74,21 +74,23 @@ public class MainController {
 
 
     @RequestMapping(value = "/{category}/{goods}", method = RequestMethod.GET)
-    public ModelAndView showGoods(@PathVariable("category") String category,
-                                            @PathVariable("goods") String goods) {
+    public String showGoods(@PathVariable("category") String category,
+                            @PathVariable("goods") String goods, Model model) {
 
-        return getModelAndViewGoods(category, goods);
+        model.addAttribute("goodsInCart", new GoodsInCart());
+
+        return getModelAndViewGoods(category, goods, model);
     }
 
 
     @RequestMapping(value = "/{category}/{goods}", method = RequestMethod.POST)
-    public ModelAndView addGoodsToCart(@ModelAttribute GoodsInCart goodsInCart,
+    public String addGoodsToCart(@ModelAttribute GoodsInCart goodsInCart,
                                         @PathVariable("category") String category,
-                                        @PathVariable("goods") String goods) {
+                                        @PathVariable("goods") String goods, Model model) {
 
         order.addGoods(goodsInCart);
 
-        return getModelAndViewGoods(category, goods);
+        return getModelAndViewGoods(category, goods, model);
     }
 
 
@@ -141,8 +143,9 @@ public class MainController {
 
 
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
-    public String cart() {
+    public String cart(Model model) {
 
+        model.addAttribute("order", order);
         return "cart";
     }
 
@@ -220,15 +223,12 @@ public class MainController {
     }
 
 
-    private ModelAndView getModelAndViewGoods(String category, String goods) {
+    private String getModelAndViewGoods(String category, String goods, Model model) {
 
         Goods resultGoods = dbManager.takeGoods(category + "Goods", goods);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("goods", resultGoods);
-        modelAndView.addObject("goodsInCart", new GoodsInCart());
-        modelAndView.setViewName("goodsPage");
+        model.addAttribute("goods", resultGoods);
 
-        return modelAndView;
+        return "goodsPage";
     }
 
 

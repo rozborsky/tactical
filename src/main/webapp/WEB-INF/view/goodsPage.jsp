@@ -17,6 +17,7 @@
             <td>
                 <form:input path="title" type="hidden" value="${goods.getTitle()}"/>
                 <form:input path="prise" type="hidden" value="${goods.getPrice()}"/>
+                <form:label path="number">number</form:label></br>
                 <form:input path="number" value="1"/>
                 <form:errors path="number" id="error"/>
             </td>
@@ -28,5 +29,5 @@
         </tr>
     </table>
 </form:form>
-
+<p id="todo">prise fomat</p>
 <jsp:include page="footer.jsp" />

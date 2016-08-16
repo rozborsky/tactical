@@ -1,9 +1,10 @@
 package ua.rozborskyRoman.internetShop.classes.cart;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
 
 /**
  * Created by roman on 06.08.2016.
@@ -15,7 +16,7 @@ public class GoodsInCart {
 
     private int number;
 
-    private float prise;
+    private double prise;
 
     public String getTitle() {
         return title;
@@ -33,11 +34,11 @@ public class GoodsInCart {
         this.number = number;
     }
 
-    public void setPrise(float prise) {
+    public void setPrise(double prise) {
         this.prise = prise;
     }
 
-    public float getPrise() {
+    public double getPrise() {
         return prise;
     }
 }

@@ -19,6 +19,14 @@ public class Order {
     }
 
     public void addGoods(GoodsInCart goods) {
+
+        for (int i = 0; i < getOrder().size(); i++) {
+            if (getOrder().get(i).getTitle().equals(goods.getTitle())) {
+                int number = getOrder().get(i).getNumber();
+                getOrder().get(i).setNumber(++number);
+                return;
+            }
+        }
         orderedGoods.add(goods);
     }
 
@@ -26,8 +34,8 @@ public class Order {
 
     }
 
-    public float totalPrise() {
-        float prise = 0;
+    public double totalPrise() {
+        double prise = 0;
 
         for (int i = 0; i < orderedGoods.size(); i++) {
             prise += orderedGoods.get(i).getPrise() * orderedGoods.get(i).getNumber();
