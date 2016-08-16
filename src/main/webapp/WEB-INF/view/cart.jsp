@@ -17,7 +17,7 @@
 	 </td>
 	 <td>
 		<form action="removeGoods" method="post">
-			<input name="login" value="${listValue.getTitle()}"/>
+			<input name="login" value="${listValue.getTitle()}" type="hidden"/>
 			<input type="submit" value="delete" />
 		</form>
 	 </td>
