@@ -24,7 +24,7 @@
         </tr>
         <tr>
             <td>
-                <input type="submit"  /></td>
+                <input type="submit"  value="add to cart"/></td>
             </td>
         </tr>
     </table>

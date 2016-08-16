@@ -2,10 +2,6 @@ package ua.rozborskyRoman.internetShop.classes.cart;
 
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-
 /**
  * Created by roman on 06.08.2016.
  */

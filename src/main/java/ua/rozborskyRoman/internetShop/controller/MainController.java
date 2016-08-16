@@ -149,6 +149,14 @@ public class MainController {
         return "cart";
     }
 
+    @RequestMapping(value = "/removeGoods", method = RequestMethod.POST)
+    public String deleteGoodsFromCart(@RequestParam(value="login") String goods) {
+
+        order.removeGoods(goods);
+
+        return "cart";
+    }
+
 
     @RequestMapping(value = "/personalCabinet", method = RequestMethod.GET)
     public String personalCabinet() {

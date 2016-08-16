@@ -69,3 +69,12 @@ h1{
 #todo, #error{
     color: red;
 }
+
+#goods{
+    width:600px;
+}
+
+#number{
+    width:100px;
+    text-align: right;
+}

@@ -3,6 +3,7 @@ package ua.rozborskyRoman.internetShop.classes.cart;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,8 +31,12 @@ public class Order {
         orderedGoods.add(goods);
     }
 
-    public void removeGoods() {
-
+    public void removeGoods(String goods) {
+        for (Iterator<GoodsInCart> iter = getOrder().listIterator(); iter.hasNext(); ) {
+            if (iter.next().getTitle().equals(goods)) {
+                iter.remove();
+            }
+        }
     }
 
     public double totalPrise() {
