@@ -122,11 +122,10 @@ public class MainController {
 
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public String signIn(@Valid @ModelAttribute ValuesSignIn valuesSignIn, BindingResult bindingResult) {
+    public String signIn(@Valid @ModelAttribute("signIn") ValuesSignIn valuesSignIn, BindingResult bindingResult) {
 
         if (isRegistered(valuesSignIn, bindingResult)){
             setParametersBuyer(valuesSignIn);
-
             return "redirect:/personalCabinet";
         }
         return "signIn";

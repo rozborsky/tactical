@@ -7,7 +7,7 @@
 
 <h1>cart</h1>
 <table border="1">
-<c:forEach var="listValue" items="${order.getOrder ()}">
+<c:forEach var="listValue" items="${order.getOrder()}">
 <tr>
     <td id="goods">
 		${listValue.getTitle()}
@@ -25,4 +25,5 @@
 </c:forEach>
 </table>
 <p>total - ${order.totalPrise()}$</p>
+<button><a href="personalCabinet">make a purchase</a></button>
 <jsp:include page="footer.jsp" />
