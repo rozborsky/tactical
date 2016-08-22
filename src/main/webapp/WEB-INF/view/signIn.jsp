@@ -1,30 +1,24 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ page session="true"%>
 
 <jsp:include page="header.jsp" />
 
-<div>
-        <form:form action="signIn" method="post" modelAttribute="signIn">
-            <table border="0">
-                <tr>
-                    <td colspan="2" align="center"><h2>Sign in</h2></td>
-                </tr>
-                <tr>
-                    <td>login:</td>
-                    <td><form:input path="login" /></td>
-                    <td><form:errors path="login"  id="error"/></td>
-                </tr>
-                <tr>
-                    <td>password:</td>
-                    <td><form:input path="password"/></td>
-                    <td><form:errors path="password"  id="error"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center"><input type="submit" value="Sign In" /></td>
-                </tr>
-            </table>
-        </form:form>
+	<h1>Spring Security - Sign In</h1>
+
+	<div style="color: red">${message}</div>
+
+	<form class="login-form" action="j_spring_security_check" method="POST">
+			<label for="j_username">Username: </label>
+		 	<input id="j_username" name="username" size="20" maxlength="50" type="text" />
+
+			<label for="j_password">Password: </label>
+			<input id="j_password" name="password" size="20" maxlength="50" type="password" />
+
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+			<input type="submit" value="Login" />
+	</form>
 
 <jsp:include page="footer.jsp" />

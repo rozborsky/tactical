@@ -1,6 +1,9 @@
 package ua.rozborskyRoman.internetShop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +16,7 @@ import ua.rozborskyRoman.internetShop.interfaces.CheckForm;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -40,22 +44,11 @@ public class MainController {
 
     private HttpSession httpSession;
 
-    @ModelAttribute("registrationSignInOrName")
-    public String getPerson(HttpServletRequest request){
+    @ModelAttribute()
+    public void getPerson(HttpServletRequest request){
         setSession(request);
         httpSession.setAttribute("order", order);
-
-        try{
-            RegisteredBuyer registeredBuyer = (RegisteredBuyer)httpSession.getAttribute("registeredBuyer");
-            registeredBuyer.getId();
-        } catch (RuntimeException exception) {
-            return "<li><a href=\"/InternetShop/signIn\">SignIn</a></li>\n" +
-                    "<li><a href=\"/InternetShop/createAccount\">Create account</a></li>";
-        }
-        return "<li><a href=\"/InternetShop/personalCabinet\">___" + registeredBuyer.getName() + "___</a></li>" +
-                "<li><a href=\"/InternetShop/exit\">Exit</a></li>\"";
     }
-
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView main() {
@@ -64,7 +57,6 @@ public class MainController {
 
         return new ModelAndView("main", "goodsCategories", goodsCategories);
     }
-
 
     @RequestMapping(value = "/{category}", method = RequestMethod.GET)
     public ModelAndView showCategories(@PathVariable("category") String category) {
@@ -115,28 +107,17 @@ public class MainController {
 
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
-    public ModelAndView signIn() {
+    public String signIn() {
 
-        return new ModelAndView("signIn", "signIn", new ValuesSignIn());
-    }
-
-
-    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public String signIn(@Valid @ModelAttribute("signIn") ValuesSignIn valuesSignIn, BindingResult bindingResult) {
-
-        if (isRegistered(valuesSignIn, bindingResult)){
-            setParametersBuyer(valuesSignIn);
-            return "redirect:/personalCabinet";
-        }
         return "signIn";
     }
 
-
-    @RequestMapping(value = "/exit", method = RequestMethod.GET)
-    public String exit() {
-
-        httpSession.invalidate();
-
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
         return "redirect:/";
     }
 
@@ -187,7 +168,6 @@ public class MainController {
     public String myAccount() { return "myAccount"; }
 
 
-
     private void checkErrorsInForm(Buyer buyer, BindingResult bindingResult) {
         if (checkForm.checkLogin(buyer.getLogin())){
             bindingResult.rejectValue("login", "error.buyer", "user with this login is already exist");
@@ -201,18 +181,6 @@ public class MainController {
     private void setSession(HttpServletRequest request) {
         httpSession = request.getSession(true);
         httpSession.setMaxInactiveInterval(30 * 60);
-    }
-
-
-    private boolean isRegistered(ValuesSignIn signIn, BindingResult bindingResult) {
-        if(dbManager.isExistLogin(signIn.getLogin())) {
-            if(dbManager.checkPassword(signIn.getLogin(),signIn.getPassword())) {
-                return true;
-            }
-        }
-        bindingResult.rejectValue("login", "error.signIn", "user with this login does not exist");
-
-        return false;
     }
 
 
@@ -239,11 +207,11 @@ public class MainController {
     }
 
 
-    private void setParametersBuyer(ValuesSignIn valuesSignIn) {
-        int buyerId = dbManager.getBuyerIg(valuesSignIn.getLogin());
-        registeredBuyer.setId(buyerId);
-        dbManager.getBuyerIg(valuesSignIn.getLogin());
-        registeredBuyer.setName(dbManager.getBuyerName(buyerId));
-        httpSession.setAttribute("registeredBuyer", registeredBuyer);
-    }
+//    private void setParametersBuyer(ValuesSignIn valuesSignIn) {
+//        int buyerId = dbManager.getBuyerIg(valuesSignIn.getLogin());
+//        registeredBuyer.setId(buyerId);
+//        dbManager.getBuyerIg(valuesSignIn.getLogin());
+//        registeredBuyer.setName(dbManager.getBuyerName(buyerId));
+//        httpSession.setAttribute("registeredBuyer", registeredBuyer);
+//    }
 }
