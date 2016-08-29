@@ -2,6 +2,8 @@ package ua.rozborskyRoman.internetShop.classes;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.stereotype.Component;
+import ua.rozborskyRoman.internetShop.interfaces.Person;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -9,7 +11,8 @@ import javax.validation.constraints.Size;
 /**
  * Created by roman on 30.07.2016.
  */
-public class Buyer {
+@Component
+public class Buyer implements Person{
 
 
     @NotEmpty(message = "enter name")

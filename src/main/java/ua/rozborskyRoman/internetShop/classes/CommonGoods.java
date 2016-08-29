@@ -1,11 +1,13 @@
 package ua.rozborskyRoman.internetShop.classes;
 
+import ua.rozborskyRoman.internetShop.interfaces.Goods;
+
 import java.util.List;
 
 /**
  * Created by roman on 06.08.2016.
  */
-public class Goods {
+public class CommonGoods implements Goods {
 
     private int id;
 

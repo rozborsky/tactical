@@ -1,9 +1,11 @@
 package ua.rozborskyRoman.internetShop.classes;
 
+import ua.rozborskyRoman.internetShop.interfaces.Category;
+
 /**
  * Created by roman on 05.08.2016.
  */
-public class GoodsCategory {
+public class GoodsCategory implements Category{
 
     private int id;
 

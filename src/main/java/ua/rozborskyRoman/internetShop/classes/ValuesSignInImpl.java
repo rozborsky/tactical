@@ -2,12 +2,15 @@ package ua.rozborskyRoman.internetShop.classes;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
+import ua.rozborskyRoman.internetShop.interfaces.ValuesSignIn;
 
 /**
  * Created by roman on 01.08.2016.
  */
-public class ValuesSignIn {
+@Component
+public class ValuesSignInImpl implements ValuesSignIn{
 
     @NotEmpty(message = "insert login")
     private String login;

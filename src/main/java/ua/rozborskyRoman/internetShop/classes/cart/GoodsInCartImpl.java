@@ -1,12 +1,13 @@
 package ua.rozborskyRoman.internetShop.classes.cart;
 
 import org.springframework.stereotype.Component;
+import ua.rozborskyRoman.internetShop.interfaces.GoodsInCart;
 
 /**
  * Created by roman on 06.08.2016.
  */
 @Component
-public class GoodsInCart {
+public class GoodsInCartImpl implements GoodsInCart{
 
     private String title;
 

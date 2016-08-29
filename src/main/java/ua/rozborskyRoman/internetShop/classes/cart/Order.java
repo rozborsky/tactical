@@ -13,13 +13,13 @@ import java.util.List;
 @Component
 public class Order {
 
-    private List<GoodsInCart> orderedGoods = new ArrayList<>();
+    private List<GoodsInCartImpl> orderedGoods = new ArrayList<>();
 
-    public List<GoodsInCart> getOrder () {
+    public List<GoodsInCartImpl> getOrder () {
         return orderedGoods;
     }
 
-    public void addGoods(GoodsInCart goods) {
+    public void addGoods(GoodsInCartImpl goods) {
 
         for (int i = 0; i < getOrder().size(); i++) {
             if (getOrder().get(i).getTitle().equals(goods.getTitle())) {
@@ -32,7 +32,7 @@ public class Order {
     }
 
     public void removeGoods(String goods) {
-        for (Iterator<GoodsInCart> iter = getOrder().listIterator(); iter.hasNext(); ) {
+        for (Iterator<GoodsInCartImpl> iter = getOrder().listIterator(); iter.hasNext(); ) {
             if (iter.next().getTitle().equals(goods)) {
                 iter.remove();
             }

@@ -7,10 +7,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rozborskyRoman.internetShop.classes.*;
-import ua.rozborskyRoman.internetShop.classes.cart.GoodsInCart;
+import ua.rozborskyRoman.internetShop.classes.cart.GoodsInCartImpl;
 import ua.rozborskyRoman.internetShop.classes.cart.Order;
-import ua.rozborskyRoman.internetShop.interfaces.CheckForm;
-import ua.rozborskyRoman.internetShop.interfaces.DAO;
+import ua.rozborskyRoman.internetShop.interfaces.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,6 +36,12 @@ public class MainController {
 
     @Autowired
     private GoodsInCart goodsInCart;
+
+    @Autowired
+    private Person person;
+
+    @Autowired
+    private ValuesSignIn valuesSignIn;
 
     private HttpSession httpSession;
 
@@ -77,14 +82,14 @@ public class MainController {
     public String showGoods(@PathVariable("category") String category,
                             @PathVariable("goods") String goods, Model model) {
 
-        model.addAttribute("goodsInCart", new GoodsInCart());
+        model.addAttribute("goodsInCart", goodsInCart);
 
         return getModelAndViewGoods(category, goods, model);
     }
 
 
     @RequestMapping(value = "/{category}/{goods}", method = RequestMethod.POST)
-    public String addGoodsToCart(@ModelAttribute GoodsInCart goodsInCart,
+    public String addGoodsToCart(@ModelAttribute GoodsInCartImpl goodsInCart,
                                         @PathVariable("category") String category,
                                         @PathVariable("goods") String goods, Model model) {
 
@@ -96,7 +101,7 @@ public class MainController {
 
     @RequestMapping(value = "/createAccount", method = RequestMethod.GET)
     public ModelAndView createAccount() {
-        return new ModelAndView("createAccount", "buyer", new Buyer());
+        return new ModelAndView("createAccount", "buyer", person);
     }
 
 
@@ -117,12 +122,12 @@ public class MainController {
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public ModelAndView signIn() {
 
-        return new ModelAndView("signIn", "signIn", new ValuesSignIn());
+        return new ModelAndView("signIn", "signIn", valuesSignIn);
     }
 
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public String signIn(@Valid @ModelAttribute ValuesSignIn valuesSignIn, BindingResult bindingResult) {
+    public String signIn(@Valid @ModelAttribute ValuesSignInImpl valuesSignIn, BindingResult bindingResult) {
 
         if (isRegistered(valuesSignIn, bindingResult)){
             setParametersBuyer(valuesSignIn);
@@ -205,7 +210,7 @@ public class MainController {
     }
 
 
-    private boolean isRegistered(ValuesSignIn signIn, BindingResult bindingResult) {
+    private boolean isRegistered(ValuesSignInImpl signIn, BindingResult bindingResult) {
         if(dbManager.isExistLogin(signIn.getLogin())) {
             if(dbManager.checkPassword(signIn.getLogin(),signIn.getPassword())) {
                 return true;
@@ -219,7 +224,7 @@ public class MainController {
 
     private ModelAndView getModelAndViewCategory(String category) {
         String tableName = category + "Goods";
-        List<Goods> goodsList = dbManager.takeListGoods(tableName);
+        List<CommonGoods> goodsList = dbManager.takeListGoods(tableName);
         String description = dbManager.takeDescription("homeGoodsCategory", category);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -233,14 +238,14 @@ public class MainController {
 
     private String getModelAndViewGoods(String category, String goods, Model model) {
 
-        Goods resultGoods = dbManager.takeGoods(category + "Goods", goods);
+        CommonGoods resultGoods = dbManager.takeGoods(category + "Goods", goods);
         model.addAttribute("goods", resultGoods);
 
         return "goodsPage";
     }
 
 
-    private void setParametersBuyer(ValuesSignIn valuesSignIn) {
+    private void setParametersBuyer(ValuesSignInImpl valuesSignIn) {
         int buyerId = dbManager.getBuyerIg(valuesSignIn.getLogin());
         registeredBuyer.setId(buyerId);
         dbManager.getBuyerIg(valuesSignIn.getLogin());

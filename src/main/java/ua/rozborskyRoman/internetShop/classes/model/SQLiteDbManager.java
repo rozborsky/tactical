@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import ua.rozborskyRoman.internetShop.classes.Buyer;
-import ua.rozborskyRoman.internetShop.classes.Goods;
+import ua.rozborskyRoman.internetShop.classes.CommonGoods;
 import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
@@ -132,13 +132,13 @@ public class SQLiteDbManager implements DAO {
 
 
     @Override
-    public List<Goods> takeListGoods(String tableName) {
+    public List<CommonGoods> takeListGoods(String tableName) {
         final String sql = "SELECT * FROM " + tableName;
-        List<Goods> listOfGoods = jdbcTemplate.query(sql, new RowMapper<Goods>() {
+        List<CommonGoods> listOfGoods = jdbcTemplate.query(sql, new RowMapper<CommonGoods>() {
 
             @Override
-            public Goods mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Goods goods = new Goods();
+            public CommonGoods mapRow(ResultSet rs, int rowNum) throws SQLException {
+                CommonGoods goods = new CommonGoods();
                 goods.setTitle(rs.getString("title"));
                 goods.setDescription(rs.getString("description"));
                 goods.setPrice(rs.getFloat("price"));
@@ -149,12 +149,12 @@ public class SQLiteDbManager implements DAO {
     }
 
     @Override
-    public Goods takeGoods(String tableName, String goods) {
+    public CommonGoods takeGoods(String tableName, String goods) {
         String sql = "SELECT * FROM " + tableName + " WHERE title = ?";
-        Goods result = jdbcTemplate.queryForObject(sql, new Object[] {goods}, new RowMapper<Goods>() {
+        CommonGoods result = jdbcTemplate.queryForObject(sql, new Object[] {goods}, new RowMapper<CommonGoods>() {
             @Override
-            public Goods mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Goods goods = new Goods();
+            public CommonGoods mapRow(ResultSet rs, int rowNum) throws SQLException {
+                CommonGoods goods = new CommonGoods();
                 goods.setTitle(rs.getString("title"));
                 goods.setDescription(rs.getString("description"));
                 goods.setPrice(rs.getFloat("price"));
