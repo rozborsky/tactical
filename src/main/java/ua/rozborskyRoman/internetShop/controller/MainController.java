@@ -10,6 +10,7 @@ import ua.rozborskyRoman.internetShop.classes.*;
 import ua.rozborskyRoman.internetShop.classes.cart.GoodsInCartImpl;
 import ua.rozborskyRoman.internetShop.classes.cart.Order;
 import ua.rozborskyRoman.internetShop.interfaces.*;
+import ua.rozborskyRoman.internetShop.server.HibernateUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
