@@ -1,6 +1,6 @@
 package ua.rozborskyRoman.internetShop.interfaces;
 
-import ua.rozborskyRoman.internetShop.classes.Buyer;
+import ua.rozborskyRoman.internetShop.classes.BuyerValidator;
 import ua.rozborskyRoman.internetShop.classes.CommonGoods;
 import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface DAO {
 
-    void addBuyer(Buyer buyer);
+    void addBuyer(BuyerValidator buyer);
 
     boolean isExistLogin(String login);
 

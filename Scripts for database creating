@@ -91,3 +91,10 @@ CREATE TABLE public."homePageGoodsList"
    goods text NOT NULL,
    image text NOT NULL
 )
+CREATE TABLE tactic."student"
+(
+   id integer PRIMARY KEY DEFAULT nextval('id_incrementr'),
+   title text NOT NULL,
+   description text NOT NULL,
+   isbn integer
+)

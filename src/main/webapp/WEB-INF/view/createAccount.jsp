@@ -5,7 +5,7 @@
 
 <jsp:include page="header.jsp" />
     <div>
-        <form:form action="confirmRegistration" method="post" commandName="buyer">
+        <form:form action="confirmRegistration" method="post" commandName="buyerValidator">
             <table border="0">
                 <tr>
                     <td colspan="2" align="center"><h2>Registration</h2></td>

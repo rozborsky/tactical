@@ -10,7 +10,6 @@ import ua.rozborskyRoman.internetShop.classes.*;
 import ua.rozborskyRoman.internetShop.classes.cart.GoodsInCartImpl;
 import ua.rozborskyRoman.internetShop.classes.cart.Order;
 import ua.rozborskyRoman.internetShop.interfaces.*;
-import ua.rozborskyRoman.internetShop.server.HibernateUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -102,21 +101,32 @@ public class MainController {
 
     @RequestMapping(value = "/createAccount", method = RequestMethod.GET)
     public ModelAndView createAccount() {
-        return new ModelAndView("createAccount", "buyer", person);
+
+        return new ModelAndView("createAccount", "buyerValidator", person);
     }
 
 
     @RequestMapping(value = "/confirmRegistration", method = RequestMethod.POST)
-    public String confirmRegistration(@Valid @ModelAttribute Buyer buyer, BindingResult bindingResult) {
+    public String confirmRegistration(@Valid @ModelAttribute(value = "buyerValidator") BuyerValidator buyerValidator,
+                                      BindingResult bindingResult) {
 
-        checkErrorsInForm(buyer, bindingResult);
+        checkErrorsInForm(buyerValidator, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "createAccount";
         }
-        dbManager.addBuyer(buyer);
+
+        saveBuyerInDB(buyerValidator);
 
         return "personalCabinet";
+    }
+
+    private void saveBuyerInDB(@Valid @ModelAttribute(value = "buyerValidator") BuyerValidator buyerValidator) {
+        Buyer buyer = new Buyer(buyerValidator);
+
+        Factory factory = Factory.getInstance();
+        SaveBuyer saveBuyer = factory.getBuyer();
+        saveBuyer.registerBuyer(buyer);
     }
 
 
@@ -195,7 +205,7 @@ public class MainController {
 
 
 
-    private void checkErrorsInForm(Buyer buyer, BindingResult bindingResult) {
+    private void checkErrorsInForm(BuyerValidator buyer, BindingResult bindingResult) {
         if (checkForm.checkLogin(buyer.getLogin())){
             bindingResult.rejectValue("login", "error.buyer", "user with this login is already exist");
         }

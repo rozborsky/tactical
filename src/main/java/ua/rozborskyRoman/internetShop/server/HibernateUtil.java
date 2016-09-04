@@ -6,18 +6,18 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 public class HibernateUtil {
-    private static SessionFactory sessionFactory;
+    private  static SessionFactory sessionFactory;
+
+    private HibernateUtil() {}
+    static{
+        try {
+            sessionFactory = new Configuration().configure().buildSessionFactory();
+        }catch (Throwable e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
 
     public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            Configuration configuration = new Configuration().configure();
-            ServiceRegistry serviceRegistry
-                    = new StandardServiceRegistryBuilder()
-                    .applySettings(configuration.getProperties()).build();
-
-            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-        }
-
         return sessionFactory;
     }
 }
