@@ -6,7 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import ua.rozborskyRoman.internetShop.classes.BuyerValidator;
+import ua.rozborskyRoman.internetShop.classes.BuyerValidatorImpl;
 import ua.rozborskyRoman.internetShop.classes.CommonGoods;
 import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
@@ -32,7 +32,7 @@ public class SQLiteDbManager implements DAO {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void addBuyer(BuyerValidator buyer) {
+    public void addBuyer(BuyerValidatorImpl buyer) {
         String query = "INSERT INTO buyer (name, surname, eMail, login, address, phone, password) values (?,?,?,?,?,?,?)";
         jdbcTemplate.update(query, new Object[]{buyer.getName(), buyer.getSurname(), buyer.geteMail(), buyer.getLogin(),
                 buyer.getAddress(), buyer.getPhone(), buyer.getPassword()});

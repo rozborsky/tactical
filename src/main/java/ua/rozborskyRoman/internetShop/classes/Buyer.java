@@ -1,15 +1,18 @@
 package ua.rozborskyRoman.internetShop.classes;
 
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 /**
  * Created by roman on 04.09.2016.
  */
 @Entity
 @Table(name = "buyer")
+@Component
 public class Buyer {
 
-    public Buyer(BuyerValidator buyerValidator){
+    public void setValues(BuyerValidatorImpl buyerValidator){
         this.name = buyerValidator.getName();
         this.surname = buyerValidator.getSurname();
         this.eMail = buyerValidator.geteMail();
@@ -72,7 +75,6 @@ public class Buyer {
     public void setLogin(String login) {
         this.login = login;
     }
-
 
     public void setId(int id) {
         this.id = id;

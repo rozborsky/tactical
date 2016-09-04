@@ -3,7 +3,7 @@ package ua.rozborskyRoman.internetShop.interfaces;
 /**
  * Created by roman on 29.08.2016.
  */
-public interface Person {
+public interface BuyerValidator {
     void setConfirmPassword(String confirmPassword);
 
     String getName();

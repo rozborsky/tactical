@@ -1,8 +1,7 @@
-package ua.rozborskyRoman.internetShop.classes.model;
+package ua.rozborskyRoman.internetShop.classes;
 
 import org.hibernate.Session;
 import ua.rozborskyRoman.internetShop.classes.Buyer;
-import ua.rozborskyRoman.internetShop.interfaces.Person;
 import ua.rozborskyRoman.internetShop.interfaces.SaveBuyer;
 import ua.rozborskyRoman.internetShop.server.HibernateUtil;
 
@@ -17,7 +16,7 @@ public class SaveBuyerImpl implements SaveBuyer{
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             System.out.println(buyer.getName());
-            session.save(buyer);//TODO
+            session.save(buyer);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();

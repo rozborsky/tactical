@@ -1,7 +1,6 @@
-package ua.rozborskyRoman.internetShop.classes;
+package ua.rozborskyRoman.internetShop.server;
 
-import ua.rozborskyRoman.internetShop.classes.model.SaveBuyerImpl;
-import ua.rozborskyRoman.internetShop.interfaces.Person;
+import ua.rozborskyRoman.internetShop.classes.SaveBuyerImpl;
 import ua.rozborskyRoman.internetShop.interfaces.SaveBuyer;
 
 /**

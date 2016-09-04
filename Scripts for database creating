@@ -91,10 +91,17 @@ CREATE TABLE public."homePageGoodsList"
    goods text NOT NULL,
    image text NOT NULL
 )
-CREATE TABLE tactic."student"
-(
-   id integer PRIMARY KEY DEFAULT nextval('id_incrementr'),
-   title text NOT NULL,
-   description text NOT NULL,
-   isbn integer
-)
+
+----hibernate----
+PostgresDB
+create table buyer (
+        id int4 not null,
+        name varchar(255),
+        surname varchar(255),
+        login varchar(255),
+        eMail varchar(255),
+        address varchar(255),
+        phone varchar(255),
+        password varchar(255),
+        primary key (id)
+    )

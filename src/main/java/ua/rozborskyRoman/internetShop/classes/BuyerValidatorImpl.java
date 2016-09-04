@@ -3,10 +3,8 @@ package ua.rozborskyRoman.internetShop.classes;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Component;
-import ua.rozborskyRoman.internetShop.interfaces.Person;
+import ua.rozborskyRoman.internetShop.interfaces.BuyerValidator;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -14,7 +12,7 @@ import javax.validation.constraints.Size;
  * Created by roman on 30.07.2016.
  */
 @Component
-public class BuyerValidator implements Person{
+public class BuyerValidatorImpl implements BuyerValidator {
 
     @NotEmpty(message = "enter name")
     @Size(min=2, max = 20, message = "name must be from 2 to 20 symbols")
