@@ -10,7 +10,6 @@ import ua.rozborskyRoman.internetShop.classes.*;
 import ua.rozborskyRoman.internetShop.classes.cart.GoodsInCartImpl;
 import ua.rozborskyRoman.internetShop.classes.cart.Order;
 import ua.rozborskyRoman.internetShop.interfaces.*;
-import ua.rozborskyRoman.internetShop.server.Factory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,6 +45,9 @@ public class MainController {
 
     @Autowired
     private Buyer buyer;
+
+    @Autowired
+    SaveBuyer saveBuyer;
 
     private HttpSession httpSession;
 
@@ -120,9 +122,14 @@ public class MainController {
             return "createAccount";
         }
 
-        saveBuyerInDB(buyerValidator);
+        saveBuyer(buyerValidator);
 
         return "personalCabinet";
+    }
+
+    private void saveBuyer(BuyerValidatorImpl buyerValidator) {
+        buyer.setValues(buyerValidator);
+        saveBuyer.registerBuyer(buyer);
     }
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
@@ -197,15 +204,6 @@ public class MainController {
 
     @RequestMapping(value = "/myAccount", method = RequestMethod.GET)
     public String myAccount() { return "myAccount"; }
-
-
-
-    private void saveBuyerInDB(@Valid @ModelAttribute(value = "buyerValidator") BuyerValidatorImpl buyerValidator) {
-        buyer.setValues(buyerValidator);
-        Factory factory = Factory.getInstance();
-        SaveBuyer saveBuyer = factory.getBuyer();
-        saveBuyer.registerBuyer(buyer);
-    }
 
     private void checkErrorsInForm(BuyerValidatorImpl buyer, BindingResult bindingResult) {
         if (checkForm.checkLogin(buyer.getLogin())){

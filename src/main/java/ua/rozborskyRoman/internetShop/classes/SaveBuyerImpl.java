@@ -1,6 +1,7 @@
 package ua.rozborskyRoman.internetShop.classes;
 
 import org.hibernate.Session;
+import org.springframework.stereotype.Component;
 import ua.rozborskyRoman.internetShop.classes.Buyer;
 import ua.rozborskyRoman.internetShop.interfaces.SaveBuyer;
 import ua.rozborskyRoman.internetShop.server.HibernateUtil;
@@ -8,6 +9,7 @@ import ua.rozborskyRoman.internetShop.server.HibernateUtil;
 /**
  * Created by roman on 04.09.2016.
  */
+@Component
 public class SaveBuyerImpl implements SaveBuyer{
     @Override
     public void registerBuyer(Buyer buyer) {
@@ -15,7 +17,6 @@ public class SaveBuyerImpl implements SaveBuyer{
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            System.out.println(buyer.getName());
             session.save(buyer);
             session.getTransaction().commit();
         } catch (Exception e) {
