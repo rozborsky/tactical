@@ -1,8 +1,7 @@
 package ua.rozborskyRoman.internetShop.interfaces;
 
-import ua.rozborskyRoman.internetShop.classes.BuyerValidatorImpl;
-import ua.rozborskyRoman.internetShop.classes.CommonGoods;
-import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
+import ua.rozborskyRoman.internetShop.classes.goods.CommonGoods;
+import ua.rozborskyRoman.internetShop.classes.goods.GoodsCategory;
 
 import java.util.List;
 
@@ -10,8 +9,6 @@ import java.util.List;
  * Created by roman on 29.07.2016.
  */
 public interface DAO {
-
-    void addBuyer(BuyerValidatorImpl buyer);
 
     boolean isExistLogin(String login);
 
@@ -26,8 +23,6 @@ public interface DAO {
     String getBuyerName(int id);
 
     List<CommonGoods> takeListGoods(String tableName);
-
-    List<GoodsCategory> takeListCategory(String tableName);
 
     CommonGoods takeGoods(String tableName, String goods);
 }

@@ -6,9 +6,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import ua.rozborskyRoman.internetShop.classes.BuyerValidatorImpl;
-import ua.rozborskyRoman.internetShop.classes.CommonGoods;
-import ua.rozborskyRoman.internetShop.classes.GoodsCategory;
+import ua.rozborskyRoman.internetShop.classes.goods.CommonGoods;
+import ua.rozborskyRoman.internetShop.classes.goods.GoodsCategory;
 import ua.rozborskyRoman.internetShop.interfaces.DAO;
 
 import javax.sql.DataSource;
@@ -30,12 +29,6 @@ public class SQLiteDbManager implements DAO {
     @Qualifier("dataSourceSQLite")
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
-    public void addBuyer(BuyerValidatorImpl buyer) {
-        String query = "INSERT INTO buyer (name, surname, eMail, login, address, phone, password) values (?,?,?,?,?,?,?)";
-        jdbcTemplate.update(query, new Object[]{buyer.getName(), buyer.getSurname(), buyer.geteMail(), buyer.getLogin(),
-                buyer.getAddress(), buyer.getPhone(), buyer.getPassword()});
     }
 
     @Override
@@ -62,28 +55,7 @@ public class SQLiteDbManager implements DAO {
         return false;
     }
 
-    @Override
-    public List<GoodsCategory> takeListCategory(String tableName) {
-        final String sql = "SELECT * FROM " + tableName;
 
-        List<GoodsCategory> listCategoryOfGoods = jdbcTemplate.query(sql, new RowMapper<GoodsCategory>() {
-
-            @Override
-            public GoodsCategory mapRow(ResultSet rs, int rowNum) throws SQLException {
-                GoodsCategory goodsCategory = new GoodsCategory();
-                goodsCategory.setName(rs.getString("name"));
-                goodsCategory.setImage(rs.getString("image"));
-
-                return goodsCategory;
-            }
-
-        });
-        for (int i = 0; i < listCategoryOfGoods.size(); i++) {
-            listCategoryOfGoods.get(i).getImage();
-        }
-
-        return listCategoryOfGoods;
-    }
 
     @Override
     public String takeDescription(String table, String category) {

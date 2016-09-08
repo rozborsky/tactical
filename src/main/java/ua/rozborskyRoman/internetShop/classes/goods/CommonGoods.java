@@ -1,4 +1,4 @@
-package ua.rozborskyRoman.internetShop.classes;
+package ua.rozborskyRoman.internetShop.classes.goods;
 
 import ua.rozborskyRoman.internetShop.interfaces.Goods;
 

@@ -1,4 +1,4 @@
-package ua.rozborskyRoman.internetShop.classes;
+package ua.rozborskyRoman.internetShop.classes.buyer;
 
 
 import org.springframework.stereotype.Component;

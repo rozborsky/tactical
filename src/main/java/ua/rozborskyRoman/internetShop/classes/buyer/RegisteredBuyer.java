@@ -1,4 +1,4 @@
-package ua.rozborskyRoman.internetShop.classes;
+package ua.rozborskyRoman.internetShop.classes.buyer;
 
 import org.springframework.stereotype.Component;
 
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
  * Created by roman on 08.08.2016.
  */
 @Component
-public class RegisteredBuyer {
+public class RegisteredBuyer {//TODO refactor code and delete this class
 
     private int id;
 

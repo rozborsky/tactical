@@ -7,8 +7,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.rozborskyRoman.internetShop.classes.*;
+import ua.rozborskyRoman.internetShop.classes.buyer.Buyer;
+import ua.rozborskyRoman.internetShop.classes.buyer.BuyerValidatorImpl;
+import ua.rozborskyRoman.internetShop.classes.buyer.RegisteredBuyer;
 import ua.rozborskyRoman.internetShop.classes.cart.GoodsInCartImpl;
 import ua.rozborskyRoman.internetShop.classes.cart.Order;
+import ua.rozborskyRoman.internetShop.classes.goods.CommonGoods;
+import ua.rozborskyRoman.internetShop.classes.goods.GoodsCategoriesManagerHibernate;
+import ua.rozborskyRoman.internetShop.classes.goods.GoodsCategory;
+import ua.rozborskyRoman.internetShop.classes.model.CreateAndInitDB;
+import ua.rozborskyRoman.internetShop.classes.model.SQLiteDbManager;
 import ua.rozborskyRoman.internetShop.interfaces.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +31,10 @@ import java.util.List;
 public class MainController {
 
     @Autowired
-    private DAO dbManager;
+    private SQLiteDbManager dbManager;
+
+//    @Autowired
+//    private HibernateDbManager dbManagerTMP;
 
     @Autowired
     private CheckForm checkForm;
@@ -47,7 +58,10 @@ public class MainController {
     private Buyer buyer;
 
     @Autowired
-    SaveBuyer saveBuyer;
+    BuyerManager buyerManager;
+
+    @Autowired
+    GoodsCategoriesManager dbManagerHibernate;
 
     private HttpSession httpSession;
 
@@ -70,10 +84,10 @@ public class MainController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView main() {
+//        CreateAndInitDB createAndInitDB = new CreateAndInitDB();
+//        createAndInitDB.setCategories();
 
-        List<GoodsCategory> goodsCategories = dbManager.takeListCategory("homeGoodsCategory");
-
-        return new ModelAndView("main", "goodsCategories", goodsCategories);
+        return new ModelAndView("main", "goodsCategories", dbManagerHibernate.getListCategories());
     }
 
 
@@ -124,12 +138,12 @@ public class MainController {
 
         saveBuyer(buyerValidator);
 
-        return "personalCabinet";
+        return "redirect:/personalCabinet";
     }
 
     private void saveBuyer(BuyerValidatorImpl buyerValidator) {
         buyer.setValues(buyerValidator);
-        saveBuyer.registerBuyer(buyer);
+        buyerManager.registerBuyer(buyer);
     }
 
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)

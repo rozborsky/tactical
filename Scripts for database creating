@@ -105,3 +105,11 @@ create table buyer (
         password varchar(255),
         primary key (id)
     )
+
+create table goodsCategory (
+        id int4 not null,
+        name varchar(255),
+        image varchar(255),
+        description varchar(255),
+        primary key (id)
+    )

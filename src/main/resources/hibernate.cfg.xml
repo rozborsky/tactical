@@ -13,7 +13,10 @@
     <property name="show_sql">true</property>
     <property name="format_sql">true</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.enable_lazy_load_no_trans">true</property>
+
     <mapping resource="buyer.hbm.xml"/>
+    <mapping resource="categories.hbm.xml"/>
 
 </session-factory>
 </hibernate-configuration>
