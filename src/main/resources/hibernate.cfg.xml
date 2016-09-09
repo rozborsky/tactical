@@ -15,8 +15,10 @@
     <property name="hibernate.hbm2ddl.auto">update</property>
     <property name="hibernate.enable_lazy_load_no_trans">true</property>
 
-    <mapping resource="buyer.hbm.xml"/>
-    <mapping resource="categories.hbm.xml"/>
+
+    <mapping class="ua.rozborskyRoman.internetShop.classes.goods.GoodsCategory"/>
+    <mapping class="ua.rozborskyRoman.internetShop.classes.goods.CommonGoods"/>
+    <mapping class="ua.rozborskyRoman.internetShop.classes.buyer.Buyer"/>
 
 </session-factory>
 </hibernate-configuration>

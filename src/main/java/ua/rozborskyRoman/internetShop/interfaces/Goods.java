@@ -11,10 +11,6 @@ public interface Goods {
 
     void setId(int id);
 
-    List<String> getImages();
-
-    void setImages(List<String> images);
-
     String getTitle();
 
     void setTitle(String title);
@@ -26,4 +22,8 @@ public interface Goods {
     float getPrice();
 
     void setPrice(float price);
+
+    String getCategory();
+
+    void setCategory(String category);
 }

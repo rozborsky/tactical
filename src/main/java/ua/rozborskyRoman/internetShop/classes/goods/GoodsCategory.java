@@ -5,17 +5,22 @@ import org.springframework.stereotype.Component;
 import ua.rozborskyRoman.internetShop.interfaces.Category;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by roman on 05.08.2016.
  */
 @Entity
-@Table(name = "goodsCategory")
+@Table(name = "goods_category")
 @Component
 public class GoodsCategory implements Category{
 
+    public GoodsCategory(){
+
+    }
     @Id
-    @Column(name = "id")
+    @Column(name = "categoryId")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
@@ -28,6 +33,17 @@ public class GoodsCategory implements Category{
     @Column(name = "description")
     @Length(max = 10000)
     private String description;
+
+    @OneToMany(mappedBy = "goodsCategory", cascade = CascadeType.ALL)
+    private List<CommonGoods> products;
+
+    public List<CommonGoods> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<CommonGoods> products) {
+        this.products = products;
+    }
 
     public String getDescription() {
         return description;
